@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DashboardCard from './DashboardCard';
+import { BASE_URL } from '../config/endpoint';
 
 const cardData = [
   { key: 'orders', label: 'Orders' },
@@ -16,16 +17,16 @@ const fetchDetails = async (key: string, token: string | null) => {
   let url = '';
   switch (key) {
     case 'orders':
-      url = 'https://dashboard-rbac-server.onrender.com/api/orders';
+      url = `${BASE_URL}/orders`;
       break;
     case 'users':
-      url = 'https://dashboard-rbac-server.onrender.com/api/users';
+      url = `${BASE_URL}/users`;
       break;
     case 'settings':
-      url = 'https://dashboard-rbac-server.onrender.com/api/settings';
+      url = `${BASE_URL}/settings`;
       break;
     case 'riders':
-      url = 'https://dashboard-rbac-server.onrender.com/api/riders';
+      url = `${BASE_URL}/riders`;
       break;
     default:
       return null;

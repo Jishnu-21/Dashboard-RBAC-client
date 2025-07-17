@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaGithub, FaLinkedin, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { jwtDecode } from 'jwt-decode';
+import { BASE_URL } from '../config/endpoint';
 
 export default function Home() {
   const router = useRouter();
@@ -12,12 +14,27 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Helper to check token validity
+  function isTokenValid(token: string | null): boolean {
+    if (!token) return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      if (!decoded.exp) return false;
+      return Date.now() < decoded.exp * 1000;
+    } catch {
+      return false;
+    }
+  }
 
   useEffect(() => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (token) {
-      router.replace('/'); // Redirect to dashboard/homepage if already logged in
+    if (isTokenValid(token)) {
+      router.replace('/');
+      return;
     }
+    setCheckingAuth(false);
   }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,7 +42,7 @@ export default function Home() {
     setIsLoading(true);
     setError('');
     try {
-      const res = await fetch('https://dashboard-rbac-server.onrender.com/api/auth/login', {
+      const res = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -44,6 +61,8 @@ export default function Home() {
   };
 
   const inputClasses = "appearance-none relative block w-full px-3 py-2 border border-[#333333] bg-[#1C1C1C] text-[#FFFFFF] placeholder-[#888888] focus:outline-none focus:ring-1 focus:ring-[#FFFFFF] focus:border-[#FFFFFF] transition-colors sm:text-sm";
+
+  if (checkingAuth) return null;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000] py-12 px-4 sm:px-6 lg:px-8">
