@@ -16,16 +16,16 @@ const fetchDetails = async (key: string, token: string | null) => {
   let url = '';
   switch (key) {
     case 'orders':
-      url = 'http://localhost:5000/api/orders';
+      url = 'https://dashboard-rbac-server.onrender.com/api/orders';
       break;
     case 'users':
-      url = 'http://localhost:5000/api/users';
+      url = 'https://dashboard-rbac-server.onrender.com/api/users';
       break;
     case 'settings':
-      url = 'http://localhost:5000/api/settings';
+      url = 'https://dashboard-rbac-server.onrender.com/api/settings';
       break;
     case 'riders':
-      url = 'http://localhost:5000/api/riders';
+      url = 'https://dashboard-rbac-server.onrender.com/api/riders';
       break;
     default:
       return null;
