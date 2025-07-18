@@ -191,7 +191,6 @@ export default function DashboardCards({ role }: DashboardCardsProps) {
                 <div className="text-white text-base">Only you can access the settings.</div>
               </div>
             )}
-            {/* Add similar refined UIs for users, settings, etc. as needed */}
           </div>
         </div>
       )}
